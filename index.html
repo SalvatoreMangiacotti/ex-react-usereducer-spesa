@@ -19,7 +19,7 @@
     <script type="text/babel">
 
         const { createRoot } = ReactDOM;
-        const { useState } = React;
+        const { useState, useReducer } = React;
 
         // Milestone 1
         // 1. Crea un componente che mostra la lista dei prodotti.
@@ -29,6 +29,11 @@
             // 1. Aggiungi uno stato locale addedProducts(inizialmente un array vuoto) per rappresentare i prodotti nel carrello.
             const [addedProducts, setAddedProducts] = useState([])
 
+            function updateProductQuantity(name, quantity) {
+                setAddedProducts(valoreCorrente => valoreCorrente.map(
+                    prodotto => prodotto.name === name ? { ...prodotto, quantity } : prodotto
+                ))
+            }
 
             // Milestone 2
             // 2. Al click del bottone, usa una funzione addToCart per:
@@ -36,9 +41,10 @@
             // Se il prodotto è già nel carrello, ignora l’azione.
             function addToCart(prodotto) {
 
-                const prodottoAggiunto = addedProducts.some((element) => element.name === prodotto.name);
+                const prodottoAggiunto = addedProducts.find((element) => element.name === prodotto.name);
 
                 if (prodottoAggiunto) {
+                    updateProductQuantity(prodottoAggiunto.name, prodottoAggiunto.quantity + 1)
                     return;
                 }
 
@@ -51,7 +57,12 @@
                 ])
             }
 
+            function removeFromCart(prodotto) {
+                setAddedProducts(valoreCorrente => valoreCorrente.filter(prodotto => prodotto.name !== prodotto.name))
 
+            }
+
+            const totaleDaPagare = addedProducts.reduce((accumulatore, prodotto) => accumulatore + (prodotto.price * prodotto.quantity), 0)
 
             const products = [
                 { name: 'Mela', price: 0.5 },
@@ -69,7 +80,6 @@
                     <span>{prodotto.price.toFixed(2)} €</span>
 
                     <button onClick={() => { addToCart(prodotto) }}>Aggiungi al carrello</button>
-
                 </li>
             ))
 
@@ -87,6 +97,7 @@
                     <li className="prodottoCarrello" key={index}>
                         <p>{prodotto.name}</p>
                         <span>Quantità: {prodotto.quantity}</span>
+                        <button onClick={() => { removeFromCart(prodotto) }}> Rimuovi dal carrello </button>
                     </li>
                 ))
 
@@ -104,6 +115,7 @@
                     <ul id="prodottiCarrello">
                         {prodottiNelCarrello}
                     </ul>
+                    <h3>{totaleDaPagare.toFixed(2)}</h3>
                 </>
             )
         }
