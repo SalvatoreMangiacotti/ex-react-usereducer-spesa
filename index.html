@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Script per l'import di React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Script per montare il DOM virtuale di React in HTML -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Script che permette di scrivere nella sintassi JSX in HTML -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Document</title>
+
+    <script type="text/babel">
+
+        const { createRoot } = ReactDOM;
+
+        // 1. Crea un componente che mostra la lista dei prodotti.
+        function ListaProdotti() {
+
+            const products = [
+                { name: 'Mela', price: 0.5 },
+                { name: 'Pane', price: 1.2 },
+                { name: 'Latte', price: 1.0 },
+                { name: 'Pasta', price: 0.7 },
+            ];
+
+
+
+            // 2. Per ogni prodotto, mostra: 
+            // Nome
+            // Prezzo
+            const prodotti = products.map((prodotto, index) => (
+                <li className="prodotto" key={index}>
+                    <p>{prodotto.name}</p>
+                    <span>{prodotto.price.toFixed(2)} €</span>
+                </li>
+            ))
+
+
+            // 3. Obiettivo: Vedere un elenco leggibile di tutti i prodotti con nome e prezzo.
+            return (
+                <ul id="prodotti">
+                    {prodotti}
+                </ul>
+            )
+
+        }
+
+
+
+        // Montaggio del componente
+        const component = document.querySelector('.react-component');
+        const root = createRoot(component);
+        root.render(<ListaProdotti />)
+    </script>
+</head>
+
+<body>
+    <div class="react-component"></div>
+</body>
+
+</html>
