@@ -19,9 +19,39 @@
     <script type="text/babel">
 
         const { createRoot } = ReactDOM;
+        const { useState } = React;
 
+        // Milestone 1
         // 1. Crea un componente che mostra la lista dei prodotti.
         function ListaProdotti() {
+
+            // Milestone 2 
+            // 1. Aggiungi uno stato locale addedProducts(inizialmente un array vuoto) per rappresentare i prodotti nel carrello.
+            const [addedProducts, setAddedProducts] = useState([])
+
+
+            // Milestone 2
+            // 2. Al click del bottone, usa una funzione addToCart per:
+            // Aggiungere il prodotto al carrello se non è già presente, con una proprietà quantity = 1.
+            // Se il prodotto è già nel carrello, ignora l’azione.
+            function addToCart(prodotto) {
+
+                const prodottoAggiunto = addedProducts.some((element) => element.name === prodotto.name);
+
+                if (prodottoAggiunto) {
+                    return;
+                }
+
+                setAddedProducts(valoreCorrente => [
+                    ...valoreCorrente,
+                    {
+                        ...prodotto,
+                        quantity: 1
+                    }
+                ])
+            }
+
+
 
             const products = [
                 { name: 'Mela', price: 0.5 },
@@ -30,26 +60,52 @@
                 { name: 'Pasta', price: 0.7 },
             ];
 
-
-
-            // 2. Per ogni prodotto, mostra: 
-            // Nome
-            // Prezzo
+            // Milestone 1
+            // 2. Per ogni prodotto, mostra: Nome e Prezzo
             const prodotti = products.map((prodotto, index) => (
                 <li className="prodotto" key={index}>
+
                     <p>{prodotto.name}</p>
                     <span>{prodotto.price.toFixed(2)} €</span>
+
+                    <button onClick={() => { addToCart(prodotto) }}>Aggiungi al carrello</button>
+
                 </li>
             ))
 
 
-            // 3. Obiettivo: Vedere un elenco leggibile di tutti i prodotti con nome e prezzo.
-            return (
-                <ul id="prodotti">
-                    {prodotti}
-                </ul>
+
+            // Milestone 2
+            // 2. Per ogni prodotto della lista, aggiungi un bottone "Aggiungi al carrello":
+
+            // Al click del bottone, usa una funzione addToCart per:
+            // Aggiungere il prodotto al carrello se non è già presente, con una proprietà quantity = 1.
+            // Se il prodotto è già nel carrello, ignora l’azione.
+            const prodottiNelCarrello = addedProducts.length > 0 && ( // If e Else non può essere eseguito dentro un return in React
+
+                addedProducts.map((prodotto, index) => (
+                    <li className="prodottoCarrello" key={index}>
+                        <p>{prodotto.name}</p>
+                        <span>Quantità: {prodotto.quantity}</span>
+                    </li>
+                ))
+
             )
 
+
+
+            // Milestone 1
+            // 3. Obiettivo: Vedere un elenco leggibile di tutti i prodotti con nome e prezzo.
+            return (
+                <>
+                    <ul id="prodotti">
+                        {prodotti}
+                    </ul>
+                    <ul id="prodottiCarrello">
+                        {prodottiNelCarrello}
+                    </ul>
+                </>
+            )
         }
 
 

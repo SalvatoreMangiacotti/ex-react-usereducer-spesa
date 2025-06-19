@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+#prodotti {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.prodotto {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: deepskyblue;
+    padding: 1rem;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.prodotto button {
+    display: block;
+}
